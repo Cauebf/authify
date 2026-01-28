@@ -1,7 +1,5 @@
 package com.github.cauebf.authfy.io;
 
-import org.springframework.stereotype.Component;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Component
 public class ProfileRequest {
     
     @NotBlank(message = "Name cannot be blank")
