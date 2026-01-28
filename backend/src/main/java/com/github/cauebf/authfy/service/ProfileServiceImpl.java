@@ -8,7 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.github.cauebf.authfy.io.ProfileRequest;
 import com.github.cauebf.authfy.io.ProfileResponse;
-import com.github.cauebf.authfy.model.User;
+import com.github.cauebf.authfy.model.UserEntity;
 import com.github.cauebf.authfy.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfileResponse createProfile(ProfileRequest request) {
-        User newProfile = convertToUserEntity(request);
+        UserEntity newProfile = convertToUserEntity(request);
 
         if(userRepository.existsByEmail(newProfile.getEmail())) throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
 
@@ -29,7 +29,7 @@ public class ProfileServiceImpl implements ProfileService {
         return convertToProfileResponse(newProfile);
     }
 
-    private ProfileResponse convertToProfileResponse(User newProfile) {
+    private ProfileResponse convertToProfileResponse(UserEntity newProfile) {
         return ProfileResponse.builder()
             .userId(newProfile.getUserId())
             .name(newProfile.getName())
@@ -38,8 +38,8 @@ public class ProfileServiceImpl implements ProfileService {
             .build();
     }
 
-    private User convertToUserEntity(ProfileRequest request) {
-        return User.builder()
+    private UserEntity convertToUserEntity(ProfileRequest request) {
+        return UserEntity.builder()
             .userId(UUID.randomUUID().toString())
             .name(request.getName())
             .email(request.getEmail())
