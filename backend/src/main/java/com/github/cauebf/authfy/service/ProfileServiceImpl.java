@@ -3,6 +3,7 @@ package com.github.cauebf.authfy.service;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,12 +32,20 @@ public class ProfileServiceImpl implements ProfileService {
         return convertToProfileResponse(newProfile);
     }
 
-    private ProfileResponse convertToProfileResponse(UserEntity newProfile) {
+    @Override
+    public ProfileResponse getProfile(String email) {
+        UserEntity existingUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+
+        return convertToProfileResponse(existingUser);
+    }
+
+    private ProfileResponse convertToProfileResponse(UserEntity user) {
         return ProfileResponse.builder()
-            .userId(newProfile.getUserId())
-            .name(newProfile.getName())
-            .email(newProfile.getEmail())
-            .isAccountVerified(newProfile.getIsAccountVerified())
+            .userId(user.getUserId())
+            .name(user.getName())
+            .email(user.getEmail())
+            .isAccountVerified(user.getIsAccountVerified())
             .build();
     }
 
