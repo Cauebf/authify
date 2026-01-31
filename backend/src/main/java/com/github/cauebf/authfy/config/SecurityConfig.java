@@ -33,6 +33,7 @@ public class SecurityConfig {
 
     private final AppUserDetailsService appUserDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -45,7 +46,8 @@ public class SecurityConfig {
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // stateless session management
             .logout(AbstractHttpConfigurer::disable) // disable default Spring Security logout endpoint
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // add JWT filter before the username-password authentication filter
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class) // add JWT filter before the username-password authentication filter
+            .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(customAuthenticationEntryPoint)); // custom entry point for unauthorized access
         return http.build();
     }
 
