@@ -26,7 +26,8 @@ public class ProfileServiceImpl implements ProfileService {
     public ProfileResponse createProfile(ProfileRequest request) {
         UserEntity newProfile = convertToUserEntity(request);
 
-        if(userRepository.existsByEmail(newProfile.getEmail())) throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
+        if(userRepository.existsByEmail(newProfile.getEmail())) 
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
 
         newProfile = userRepository.save(newProfile);
         return convertToProfileResponse(newProfile);
