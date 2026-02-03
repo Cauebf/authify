@@ -28,4 +28,16 @@ public class EmailService {
                 
         mailSender.send(message);
     }
+
+    public void sendResetOtpEmail(String toEmail, String otp) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom(fromEmail);
+        message.setTo(toEmail);
+        message.setSubject("Password Reset OTP");
+        message.setText("Your OTP for password reset is: " + otp + "\n\n"
+                + "This OTP will expire in 15 minutes.");
+
+        mailSender.send(message);
+    }
 }

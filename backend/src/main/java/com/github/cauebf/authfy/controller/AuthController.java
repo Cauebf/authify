@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.cauebf.authfy.service.ProfileService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -14,10 +15,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.github.cauebf.authfy.io.AuthRequest;
 import com.github.cauebf.authfy.io.AuthResponse;
@@ -25,6 +23,7 @@ import com.github.cauebf.authfy.service.AppUserDetailsService;
 import com.github.cauebf.authfy.util.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +32,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final AppUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
+    private final ProfileService profileService;
     
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
@@ -88,5 +88,14 @@ public class AuthController {
         // checks if the user is authenticated based on the security context        
         boolean isAuthenticated = (authentication != null && authentication.isAuthenticated());
         return ResponseEntity.ok(isAuthenticated);
+    }
+
+    @PostMapping("/send-reset-otp")
+    public void sendResetOtp(@RequestParam String email) {
+        try {
+            profileService.sendResetOtp(email);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
     }
 }

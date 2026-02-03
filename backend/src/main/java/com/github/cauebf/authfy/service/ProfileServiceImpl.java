@@ -1,6 +1,7 @@
 package com.github.cauebf.authfy.service;
 
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +22,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Override
     public ProfileResponse createProfile(ProfileRequest request) {
@@ -39,6 +41,32 @@ public class ProfileServiceImpl implements ProfileService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         return convertToProfileResponse(existingUser);
+    }
+
+    @Override
+    public void sendResetOtp(String email) {
+        UserEntity existingUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+
+        // generate a random 6-digit OTP
+        String otp = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 1000000));
+
+        // set the OTP expiration time (15 minutes from now)
+        long expirationTime = System.currentTimeMillis() + (15 * 60 * 1000);
+
+        // update the user's reset OTP and expiration time
+        existingUser.setResetOtp(otp);
+        existingUser.setResetOtpExpireAt(expirationTime);
+
+        // save the updated user entity to the database
+        userRepository.save(existingUser);
+
+        // send the reset OTP to the user's email
+        try {
+            emailService.sendResetOtpEmail(existingUser.getEmail(), otp);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to send reset OTP");
+        }
     }
 
     private ProfileResponse convertToProfileResponse(UserEntity user) {
