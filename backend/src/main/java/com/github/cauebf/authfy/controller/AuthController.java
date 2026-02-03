@@ -4,7 +4,9 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.cauebf.authfy.io.ResetPasswordRequest;
 import com.github.cauebf.authfy.service.ProfileService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -94,6 +96,15 @@ public class AuthController {
     public void sendResetOtp(@RequestParam String email) {
         try {
             profileService.sendResetOtp(email);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public void resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        try {
+            profileService.resetPassword(request.getEmail(), request.getOtp(), request.getNewPassword());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
