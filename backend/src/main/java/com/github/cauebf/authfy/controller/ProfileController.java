@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 
 import com.github.cauebf.authfy.io.ProfileRequest;
 import com.github.cauebf.authfy.io.ProfileResponse;
+import com.github.cauebf.authfy.service.EmailService;
 import com.github.cauebf.authfy.service.ProfileService;
 
 import jakarta.validation.Valid;
@@ -20,13 +21,14 @@ import lombok.RequiredArgsConstructor;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final EmailService emailService;
     
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public ProfileResponse register(@Valid @RequestBody ProfileRequest request) {
-        // creates a new user profile using the request data
+        // creates a new user profile using the request data and sends a welcome email
         ProfileResponse response = profileService.createProfile(request);
-        // TODO: send welcome email
+        emailService.sendWelcomeEmail(response.getEmail(), response.getName());
         return response;
     }
 
