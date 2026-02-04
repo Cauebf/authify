@@ -40,4 +40,16 @@ public class EmailService {
 
         mailSender.send(message);
     }
+
+    public void sendVerifyOtpEmail(String toEmail, String otp) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom(fromEmail);
+        message.setTo(toEmail);
+        message.setSubject("Account Verification OTP");
+        message.setText("Your OTP is: " + otp + "\n\n"
+                + "This OTP will expire in 24 hours.");
+
+        mailSender.send(message);
+    }
 }

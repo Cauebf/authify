@@ -109,4 +109,31 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
+
+    @PostMapping("/send-verify-otp")
+    public void sendVerifyOtp(Authentication authentication) {
+        try {
+            // get the user's email from the authentication context
+            String email = authentication.getName();
+            // send the verify OTP to the user's email
+            profileService.sendVerifyOtp(email);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @PostMapping("/verify-otp")
+    public void verifyEmail(@RequestBody Map<String, Object> request, Authentication authentication) {
+        // verify that the request contains an OTP
+        if (request.get("otp") == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "OTP is required");
+
+        try {
+            // get the user's email from the authentication context
+            String email = authentication.getName();
+            // verify the OTP using the user's email and the OTP provided in the request
+            profileService.verifyOtp(email, request.get("otp").toString());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
 }

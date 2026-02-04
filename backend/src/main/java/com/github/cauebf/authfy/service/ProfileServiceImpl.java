@@ -92,6 +92,60 @@ public class ProfileServiceImpl implements ProfileService {
         userRepository.save(existingUser);
     }
 
+    @Override
+    public void sendVerifyOtp(String email) {
+        UserEntity existingUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+
+        // if the user is already verified, return
+        if (existingUser.getIsAccountVerified() != null && existingUser.getIsAccountVerified()) {
+            return;
+        }
+
+        // generate a random 6-digit OTP
+        String otp = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 1000000));
+
+        // set the OTP expiration time (24 hours from now)
+        long expirationTime = System.currentTimeMillis() + (24 * 60 * 60 * 1000);
+
+        // update user's verify OTP and expiration time
+        existingUser.setVerifyOtp(otp);
+        existingUser.setVerifyOtpExpireAt(expirationTime);
+
+        // save the updated user entity to the database
+        userRepository.save(existingUser);
+
+        // send the verify OTP to the user's email
+        try {
+            emailService.sendVerifyOtpEmail(existingUser.getEmail(), otp);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to send verify OTP");
+        }
+    }
+
+    @Override
+    public void verifyOtp(String email, String otp) {
+        UserEntity existingUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+
+        // check if the OTP is valid
+        if (existingUser.getVerifyOtp() == null || !existingUser.getVerifyOtp().equals(otp)) {
+            throw new RuntimeException("Invalid OTP");
+        }
+
+        // check if the OTP has expired
+        if (existingUser.getVerifyOtpExpireAt() < System.currentTimeMillis()) {
+            throw new RuntimeException("OTP has expired");
+        }
+
+        // update the user's account verification status and save to the database
+        existingUser.setIsAccountVerified(true);
+        existingUser.setVerifyOtp(null);
+        existingUser.setVerifyOtpExpireAt(0L);
+
+        userRepository.save(existingUser);
+    }
+
     private ProfileResponse convertToProfileResponse(UserEntity user) {
         return ProfileResponse.builder()
             .userId(user.getUserId())
