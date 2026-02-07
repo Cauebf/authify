@@ -2,6 +2,7 @@ package com.github.cauebf.authfy.config;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +35,8 @@ public class SecurityConfig {
     private final AppUserDetailsService appUserDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    @Value("${frontend.url}")
+    private String FRONTEND_URL;
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -66,7 +69,7 @@ public class SecurityConfig {
     // defines the CORS configuration source
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000")); // allow requests from the frontend origin
+        config.setAllowedOrigins(List.of(FRONTEND_URL)); // allow requests from the frontend origin
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); // allow these HTTP methods
         config.setAllowedHeaders(List.of("Authorization", "Content-Type")); // allow these headers
         config.setAllowCredentials(true); // allow credentials (e.g. cookies)
