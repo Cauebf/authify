@@ -136,4 +136,21 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        // create a replacement cookie with no value to clear the jwt token from the user's browser
+        ResponseCookie cookie = ResponseCookie.from("jwt", "")
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(0) // the cookie expires immediately
+                .sameSite("Strict")
+                .build();
+
+        // return a response with the cleared cookie and a success message
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body("Logged out successfully!");
+    }
 }
