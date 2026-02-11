@@ -39,7 +39,22 @@ const Menubar = () => {
                 navigate("/");
             }
         } catch (error) {
-            toast.error(error.message);
+            toast.error(error.response.data.message);
+        }
+    };
+
+    const sendVerificationOtp = async () => {
+        try {
+            axios.defaults.withCredentials = true;
+            const response = await axios.post(`${backendURL}/send-verify-otp`);
+            if (response.status === 200) {
+                navigate("/email-verify");
+                toast.success("OTP has been sent successfully");
+            } else {
+                toast.error("Failed to send OTP");
+            }
+        } catch (error) {
+            toast.error(error.response.data.message);
         }
     };
 
@@ -80,6 +95,7 @@ const Menubar = () => {
                                 <div
                                     className="dropdown-item py-1 px-2"
                                     style={{ cursor: "pointer" }}
+                                    onClick={sendVerificationOtp}
                                 >
                                     Verify Email
                                 </div>
