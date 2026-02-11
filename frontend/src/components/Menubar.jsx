@@ -1,13 +1,47 @@
 import { useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../context/AppContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Menubar = () => {
     const navigate = useNavigate();
-    const { userData } = useContext(AppContext);
+    const { userData, backendURL, setUserData, setIsLoggedIn } =
+        useContext(AppContext);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            // if click outside of dropdown close dropdown
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
+                setDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    const handleLogout = async () => {
+        try {
+            axios.defaults.withCredentials = true;
+            const response = await axios.post(`${backendURL}/logout`);
+
+            if (response.status === 200) {
+                setIsLoggedIn(false);
+                setUserData(false);
+                navigate("/");
+            }
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
 
     return (
         <nav className="navbar bg-white px-5 py-4 d-flex justify-content-between align-align-items-center">
@@ -53,6 +87,7 @@ const Menubar = () => {
                             <div
                                 className="dropdown-item py-1 px-2 text-danger"
                                 style={{ cursor: "pointer" }}
+                                onClick={handleLogout}
                             >
                                 Logout
                             </div>
