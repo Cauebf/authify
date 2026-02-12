@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
+import WhiteLogo from "../components/WhiteLogo";
 
 const Login = () => {
     const [isCreateAccount, setIsCreateAccount] = useState(false);
@@ -64,27 +65,7 @@ const Login = () => {
                 border: "none",
             }}
         >
-            <div className="position-absolute top-0 start-0 px-5 py-4">
-                <Link
-                    to="/"
-                    style={{
-                        display: "flex",
-                        gap: 7,
-                        alignItems: "center",
-                        fontWeight: "bold",
-                        fontSize: "24px",
-                        textDecoration: "none",
-                    }}
-                >
-                    <img
-                        src={assets.white_logo}
-                        alt="Logo"
-                        width={32}
-                        height={32}
-                    />
-                    <span className="fw-bold fs-4 text-light">Authify</span>
-                </Link>
-            </div>
+            <WhiteLogo />
 
             <div
                 className="card p-4"
