@@ -37,13 +37,7 @@ export const AppContextProvider = (props) => {
                 setIsLoggedIn(false);
             }
         } catch (error) {
-            if (error.response) {
-                const msg = error.response.data?.message || "Authentication check failed";
-                toast.error(msg);
-            } else {
-                toast.error(error.message);
-            }
-            setIsLoggedIn(false);
+            console.error(error);
         }
     }
 
