@@ -1,6 +1,7 @@
 package com.github.cauebf.authfy.io;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class ResetPasswordRequest {
 
     @NotBlank(message = "New password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters long")
     private String newPassword;
     @NotBlank(message = "OTP is required")
     private String otp;
