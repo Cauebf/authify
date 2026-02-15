@@ -1,11 +1,19 @@
 # Authify 🔐✨
 
-<div style="display:flex; gap:10px; width:100%;">
-  <img src="./frontend/public/login-demo.png" style="width:50%; height:auto;" />
-  <img src="./frontend/public/email-demo.png" style="width:50%; height:auto;" />
-</div>
-
-<br>
+<table>
+  <tr>
+    <td align="center"><b>Login Screen</b></td>
+    <td align="center"><b>Email Verification</b></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <img src="./frontend/public/login-demo.png" alt="Login Screen">
+    </td>
+    <td width="50%" align="center">
+      <img src="./frontend/public/email-demo.png" alt="Email Verification">
+    </td>
+  </tr>
+</table>
 
 A modern **full-stack authentication and user management platform** with secure login, email verification, password reset via OTP, and JWT-based session handling.
 
