@@ -1,5 +1,12 @@
 # Authify 🔐✨
 
+<div style="display:flex; gap:10px; width:100%;">
+  <img src="./frontend/public/login-demo.png" style="width:50%; height:auto;" />
+  <img src="./frontend/public/email-demo.png" style="width:50%; height:auto;" />
+</div>
+
+<br>
+
 A modern **full-stack authentication and user management platform** with secure login, email verification, password reset via OTP, and JWT-based session handling.
 
 Built with **Spring Boot**, **Spring Security**, **JWT**, **MySQL**, and **React (Vite)**, following clean architecture and real-world authentication best practices.
@@ -9,29 +16,29 @@ This project was designed for learning, production-like implementation, and as a
 ## 📌 Table of Contents
 
 - [Authify 🔐✨](#authify-)
-  - [📌 Table of Contents](#-table-of-contents)
-  - [🌐 Overview](#-overview)
-  - [⚙️ Features](#️-features)
-  - [🔐 Authentication \& Security](#-authentication--security)
-    - [JWT Authentication](#jwt-authentication)
-    - [Email Verification](#email-verification)
-    - [Password Reset (OTP)](#password-reset-otp)
-  - [💻 Technologies Used](#-technologies-used)
-    - [Backend](#backend)
-    - [Frontend](#frontend)
-  - [🗝️ Key Takeaways](#️-key-takeaways)
-  - [🚀 How to Run the Project](#-how-to-run-the-project)
-    - [Backend (Spring Boot)](#backend-spring-boot)
-      - [1️⃣ Configure environment variables](#1️⃣-configure-environment-variables)
-      - [2️⃣ Run the backend](#2️⃣-run-the-backend)
-    - [Frontend (React + Vite)](#frontend-react--vite)
-      - [1️⃣ Install dependencies](#1️⃣-install-dependencies)
-      - [2️⃣ Run development server](#2️⃣-run-development-server)
-  - [📄 API Endpoints](#-api-endpoints)
-    - [🔑 Authentication](#-authentication)
-    - [👤 Profile](#-profile)
-  - [🤝 Contributing](#-contributing)
-  - [💬 Contact](#-contact)
+    - [📌 Table of Contents](#-table-of-contents)
+    - [🌐 Overview](#-overview)
+    - [⚙️ Features](#️-features)
+    - [🔐 Authentication \& Security](#-authentication--security)
+        - [JWT Authentication](#jwt-authentication)
+        - [Email Verification](#email-verification)
+        - [Password Reset (OTP)](#password-reset-otp)
+    - [💻 Technologies Used](#-technologies-used)
+        - [Backend](#backend)
+        - [Frontend](#frontend)
+    - [🗝️ Key Takeaways](#️-key-takeaways)
+    - [🚀 How to Run the Project](#-how-to-run-the-project)
+        - [Backend (Spring Boot)](#backend-spring-boot)
+            - [1️⃣ Configure environment variables](#1️⃣-configure-environment-variables)
+            - [2️⃣ Run the backend](#2️⃣-run-the-backend)
+        - [Frontend (React + Vite)](#frontend-react--vite)
+            - [1️⃣ Install dependencies](#1️⃣-install-dependencies)
+            - [2️⃣ Run development server](#2️⃣-run-development-server)
+    - [📄 API Endpoints](#-api-endpoints)
+        - [🔑 Authentication](#-authentication)
+        - [👤 Profile](#-profile)
+    - [🤝 Contributing](#-contributing)
+    - [💬 Contact](#-contact)
 
 ## 🌐 Overview
 
