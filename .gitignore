@@ -9,7 +9,6 @@ desktop.ini
 *.log
 
 .env
-.env.*
 
 dist/
 build/
